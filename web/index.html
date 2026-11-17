@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>政治理论 · 常识判断 | 体系化辨析</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ 侧栏 ============ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark">政</div>
+      <div class="brand-text">
+        <h1>政治理论 · 常识判断</h1>
+        <p>体系辨析｜间隔复习</p>
+      </div>
+    </div>
+
+    <div class="today-card">
+      <div class="today-head">
+        <span>今日任务</span>
+        <span class="streak" id="streak" title="连续学习天数"></span>
+      </div>
+      <div class="today-nums">
+        <div><b id="dueN">0</b><span>待复习</span></div>
+        <div><b id="newN">0</b><span>可新学</span></div>
+        <div><b id="doneN">0</b><span>今日已练</span></div>
+      </div>
+      <button class="primary-btn wide" id="startToday">开始今日复习</button>
+      <div class="today-sub" id="todaySub">每天先复习到期卡片，再学新知识点</div>
+      <div class="today-limit">
+        <label>每日新学上限
+          <select id="newLimit">
+            <option value="10">10 张</option>
+            <option value="20">20 张</option>
+            <option value="30">30 张</option>
+            <option value="50">50 张</option>
+            <option value="80">80 张</option>
+            <option value="120">120 张</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <div class="modes" id="modes">
+      <button class="mode-btn" data-mode="seq">顺序</button>
+      <button class="mode-btn" data-mode="random">随机</button>
+      <button class="mode-btn" data-mode="wrong">错题</button>
+      <button class="mode-btn" data-mode="fav">收藏</button>
+    </div>
+
+    <div class="search-wrap">
+      <input id="search" type="search" placeholder="搜索知识点关键词，如「十个明确」">
+      <div class="search-result" id="searchResult" hidden></div>
+    </div>
+
+    <div class="tree-head">
+      <span>章节</span>
+      <span class="tree-actions">
+        <button id="expandAll" title="展开全部">展开</button>
+        <button id="collapseAll" title="收起全部">收起</button>
+      </span>
+    </div>
+    <nav class="tree" id="tree"></nav>
+
+    <div class="side-foot">
+      <button id="themeBtn" class="ghost-btn">切换夜间模式</button>
+      <button id="resetBtn" class="ghost-btn danger">清空全部记录</button>
+    </div>
+  </aside>
+
+  <!-- ============ 主区 ============ -->
+  <main class="main">
+    <header class="topbar" id="topbar">
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="打开章节">☰</button>
+      <div class="scope-title" id="scopeTitle">今日复习</div>
+      <div class="topstats">
+        <div class="stat"><b id="statTotal">0</b><span>总题量</span></div>
+        <div class="stat"><b id="statLearned">0</b><span>已学</span></div>
+        <div class="stat"><b id="statDue">0</b><span>待复习</span></div>
+      </div>
+    </header>
+
+    <section class="stage" id="stage">
+      <div class="card" id="card">
+        <div class="q-no" id="qNo" aria-hidden="true">01</div>
+        <div class="card-head">
+          <div class="ch-main">
+            <div class="q-title" id="qTitle"></div>
+            <div class="path" id="path"></div>
+          </div>
+          <div class="ch-actions">
+            <span class="badge" id="cardBadge"></span>
+            <button class="mini-btn" id="treeBtn" title="查看本节知识体系">体系图</button>
+            <button class="fav" id="favBtn" title="收藏本题">☆</button>
+          </div>
+        </div>
+
+        <div class="progress-line">
+          <div class="bar"><i id="barFill"></i></div>
+          <span id="counter">0 / 0</span>
+        </div>
+
+        <div class="statement" id="statement"></div>
+
+        <div class="options" id="options"></div>
+
+        <div class="feedback" id="feedback" hidden></div>
+
+        <div class="card-foot">
+          <span class="foot-hint" id="footHint">按 1–4 选答案，Enter 下一题</span>
+          <div class="foot-btns">
+            <button class="ghost-btn" id="revealBtn">看答案</button>
+            <button class="ghost-btn" id="prevBtn">上一题</button>
+            <button class="primary-btn" id="nextBtn">下一题</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="empty" id="empty" hidden></div>
+    </section>
+
+    <!-- 体系图（整页视图） -->
+    <section class="treeview" id="treeView" hidden>
+      <header class="tv-head">
+        <button class="tv-back" id="tvBack">← 返回题目</button>
+        <div class="tv-title">
+          <h2 id="tvTitle"></h2>
+          <div class="tv-path" id="tvPath"></div>
+        </div>
+        <button class="tv-toggle" id="tvToggle">收起分节</button>
+      </header>
+
+      <div class="tv-map">
+        <div class="tv-map-label">结构概览</div>
+        <div class="tv-chips" id="tvChips"></div>
+      </div>
+
+      <div class="tv-body" id="tvBody"></div>
+
+      <button class="tv-float" id="tvFloat" title="返回题目">← 返回题目</button>
+
+      <footer class="tv-foot">
+        <button class="primary-btn" id="tvBack2">← 回到题目</button>
+      </footer>
+    </section>
+
+    <footer class="foot-note">
+      按 1–4 或点击选项作答 · 答错会在几张后自动再问一次 · 「体系图」可看本节框架的展开 · 记录保存在本机浏览器
+    </footer>
+  </main>
+</div>
+
+<div class="overlay" id="overlay"></div>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

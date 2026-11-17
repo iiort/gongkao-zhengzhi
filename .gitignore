@@ -1,0 +1,12 @@
+# 原始 PDF 与从 PDF 抽取的中间稿不进仓库（版权 + 体积）
+*.pdf
+text/
+sections/
+facts/
+
+# 临时文件
+tools/_*.txt
+*.log
+desktop.ini
+Thumbs.db
+.DS_Store
